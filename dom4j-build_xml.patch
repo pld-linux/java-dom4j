@@ -1,0 +1,41 @@
+--- build.xml.sav	2005-08-16 18:55:33.000000000 +0200
++++ build.xml	2005-08-16 18:57:46.000000000 +0200
+@@ -191,6 +191,7 @@
+     <javadoc packagenames="${packages}"
+              sourcepath="${build.src}"
+              destdir="${build.javadocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -210,6 +211,7 @@
+     <javadoc packagenames="${packages}"
+              sourcepath="${build.src}"
+              destdir="${build.javadocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -227,6 +229,7 @@
+     <javadoc packagenames="${api.packages}"
+              sourcepath="${build.src}"
+              destdir="${build.apidocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -335,10 +338,10 @@
+ 	
+   <target name="prepare-jaxb" depends="prepare-samples">
+     <path id="classpath.jaxb">
+-      <pathelement location="./lib/tools/jaxme-0.3.jar"/>
+-      <pathelement location="./lib/tools/jaxme-js-0.3.jar"/>
+-      <pathelement location="./lib/tools/jaxme-xs-0.3.jar"/>
+-      <pathelement location="./lib/jaxme-api-0.3.jar"/>
++      <pathelement location="./lib/tools/jaxme2.jar"/>
++      <pathelement location="./lib/tools/jaxmejs.jar"/>
++      <pathelement location="./lib/tools/jaxmexs.jar"/>
++      <pathelement location="./lib/jaxmeapi.jar"/>
+     </path>
+ 
+     <taskdef name="xjc" classname="org.apache.ws.jaxme.generator.XJCTask">
