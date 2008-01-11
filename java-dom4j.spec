@@ -1,18 +1,22 @@
+# TODO:
+# - fix docs mess (missing dir in main package, doc dir specific to main package in -manual)
+#
 # Conditional build:
 %bcond_with	bootstrap		# boostrap
 #
 %include	/usr/lib/rpm/macros.java
-Summary:	DOM4J
+Summary:	DOM4J - Open Source XML framework for Java
+Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
 Name:		dom4j
 Version:	1.6.1
 Release:	0.1
 License:	BSD-style
 Group:		Applications/Text
-URL:		http://www.dom4j.org/
 Source0:	http://dl.sourceforge.net/dom4j/%{name}-%{version}.tar.gz
 # Source0-md5:	1e7ef6d20939315714de4a8502f27b2d
 Source1:	%{name}-rundemo.sh
 Patch0:		%{name}-build_xml.patch
+URL:		http://www.dom4j.org/
 %if %{with bootstrap}
 BuildRequires:	jaxen-bootstrap >= 0:1.1-1
 %else
@@ -36,11 +40,16 @@ BuildRequires:	xerces-j
 BuildRequires:	xml-commons-apis
 #BuildRequires:	xpp2
 #BuildRequires:	xpp3
+Requires:	bea-stax
+Requires:	bea-stax-api
 Requires:	isorelax
 Requires:	msv-msv
 Requires:	msv-xsdlib
 Requires:	relaxngDatatype
+Requires:	ws-jaxme
+Requires:	xalan-j2
 Requires:	xerces-j2
+Requires:	xml-commons-apis
 Requires:	xpp2
 Requires:	xpp3
 %if %{with bootstrap}
@@ -48,11 +57,6 @@ Requires:	jaxen-bootstrap >= 0:1.1-1
 %else
 Requires:	jaxen >= 0:1.1-1
 %endif
-Requires:	bea-stax
-Requires:	bea-stax-api
-Requires:	ws-jaxme
-Requires:	xalan-j2
-Requires:	xml-commons-apis
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,28 +66,46 @@ read, write, navigate, create and modify XML documents. dom4j
 integrates with DOM and SAX and is seamlessly integrated with full
 XPath support.
 
+%description -l pl.UTF-8
+dom4j to szkielet XML z otwartymi źródłami dla Javy. Pozwala na
+odczyt, zapis, nawigację i modyfikowanie dokumentów XML. Integruje
+się z DOM i SAX, jest w sposób przezroczysty zintegrowany z pełną
+obsługą XPath.
+
 %package demo
 Summary:	Samples for %{name}
+Summary(pl.UTF-8):	Przykłady do pakietu %{name}
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
 
 %description demo
 Samples for %{name}.
 
+%description demo -l pl.UTF-8
+Przykłady do pakietu %{name}.
+
 %package manual
 Summary:	Manual for %{name}
+Summary(pl.UTF-8):	Podręcznik do pakietu %{name}
 Group:		Documentation
 Requires:	jpackage-utils
 
 %description manual
 Documentation for %{name}.
 
+%description manual -l pl.UTF-8
+Podręcznik do pakietu %{name}.
+
 %package javadoc
 Summary:	Javadoc for %{name}
+Summary(pl.UTF-8):	Dokumentacja Javadoc do pakietu %{name}
 Group:		Documentation
 
 %description javadoc
 Javadoc for %{name}.
+
+%description javadoc -l pl.UTF-8
+Dokumentacja Javadoc do pakietu %{name}.
 
 %prep
 %setup -q
@@ -193,6 +215,10 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 %{_javadir}/%{name}.jar
 %{_javadir}/%{name}-%{version}.jar
 
+%files demo
+%defattr(644,root,root,755)
+%{_datadir}/%{name}-%{version}
+
 %files javadoc
 %defattr(644,root,root,755)
 %{_javadocdir}/%{name}-%{version}
@@ -201,7 +227,3 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 %files manual
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-%{version}
-
-%files demo
-%defattr(644,root,root,755)
-%{_datadir}/%{name}-%{version}
