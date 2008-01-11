@@ -1,8 +1,7 @@
-# TODO:
-# - fix docs mess (missing dir in main package, doc dir specific to main package in -manual)
 #
 # Conditional build:
 %bcond_with	bootstrap		# boostrap
+#
 #
 %include	/usr/lib/rpm/macros.java
 Summary:	DOM4J - Open Source XML framework for Java
@@ -26,6 +25,7 @@ BuildRequires:	ant >= 0:1.6
 #BuildRequires:	bea-stax
 #BuildRequires:	bea-stax-api
 #BuildRequires:	isorelax
+BuildRequires:	jdk < 1.6
 BuildRequires:	jpackage-utils >= 0:1.6
 BuildRequires:	jtidy
 BuildRequires:	junit
@@ -47,8 +47,8 @@ Requires:	msv-msv
 Requires:	msv-xsdlib
 Requires:	relaxngDatatype
 Requires:	ws-jaxme
-Requires:	xalan-j2
-Requires:	xerces-j2
+Requires:	xalan-j
+Requires:	xerces-j
 Requires:	xml-commons-apis
 Requires:	xpp2
 Requires:	xpp3
@@ -110,7 +110,7 @@ Dokumentacja Javadoc do pakietu %{name}.
 %prep
 %setup -q
 # replace run.sh
-cp %{SOURCE1} run.sh
+install %{SOURCE1} run.sh
 
 %if "%{version}" == "1.6.1"
 rm -f lib/endorsed/xml-apis-2.0.2.jar
@@ -145,32 +145,34 @@ rm src/test/org/dom4j/bean/BeansTest.java
 sed -i -e '/unjar/d' -e 's|,cookbook/\*\*,|,|' build.xml
 %patch0
 
+rm -rf docs/apidocs
+
 %build
 cd lib
-#	ln -sf $(build-classpath xpp2)
-#	ln -sf $(build-classpath relaxngDatatype)
+#	ln -sf $(find-jar xpp2)
+#	ln -sf $(find-jar relaxngDatatype)
 	cd endorsed
-		ln -sf $(build-classpath xml-commons-apis)
+		ln -sf $(find-jar xml-commons-apis)
 	cd ..
-#	ln -sf $(build-classpath jaxme/jaxmeapi)
-#	ln -sf $(build-classpath msv-xsdlib)
-#	ln -sf $(build-classpath msv-msv)
-#	ln -sf $(build-classpath jaxen)
-#	ln -sf $(build-classpath bea-stax-api)
+#	ln -sf $(find-jar jaxme/jaxmeapi)
+#	ln -sf $(find-jar msv-xsdlib)
+#	ln -sf $(find-jar msv-msv)
+#	ln -sf $(find-jar jaxen)
+#	ln -sf $(find-jar bea-stax-api)
 	cd test
-#		ln -sf $(build-classpath bea-stax-ri)
-#		ln -sf $(build-classpath junitperf)
-		ln -sf $(build-classpath junit)
+#		ln -sf $(find-jar bea-stax-ri)
+#		ln -sf $(find-jar junitperf)
+		ln -sf $(find-jar junit)
 	cd ..
-#	ln -sf $(build-classpath xpp3)
+#	ln -sf $(find-jar xpp3)
 	cd tools
-#		ln -sf $(build-classpath jaxme/jaxmexs)
-		ln -sf $(build-classpath xalan)
-#		ln -sf $(build-classpath jaxme/jaxmejs)
-		ln -sf $(build-classpath jtidy)
-#		ln -sf $(build-classpath isorelax)
-#		ln -sf $(build-classpath jaxme/jaxme2)
-		ln -sf $(build-classpath xercesImpl)
+#		ln -sf $(find-jar jaxme/jaxmexs)
+		ln -sf $(find-jar xalan)
+#		ln -sf $(find-jar jaxme/jaxmejs)
+		ln -sf $(find-jar jtidy)
+#		ln -sf $(find-jar isorelax)
+#		ln -sf $(find-jar jaxme/jaxme2)
+		ln -sf $(find-jar xercesImpl)
 	cd ..
 cd ..
 
@@ -186,22 +188,20 @@ ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-cp -pr build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost
 
 # manual
 install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-rm -rf docs/apidocs
 cp -a docs/* $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-cp -a LICENSE.txt $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 
 # demo
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
-cp -pr xml $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+cp -a xml $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/src
-cp -pr src/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/src
-cp -pr build/classes/org/dom4j/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
-cp -p run.sh $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+cp -a src/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/src
+cp -a build/classes/org/dom4j/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
+install run.sh $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -211,7 +211,7 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 
 %files
 %defattr(644,root,root,755)
-%{_docdir}/%{name}-%{version}/LICENSE.txt
+%doc LICENSE.txt
 %{_javadir}/%{name}.jar
 %{_javadir}/%{name}-%{version}.jar
 
