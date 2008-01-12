@@ -192,8 +192,8 @@ cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost
 
 # manual
-install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-cp -a docs/* $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-manual-%{version}
+cp -a docs/* $RPM_BUILD_ROOT%{_docdir}/%{name}-manual-%{version}
 
 # demo
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
@@ -226,4 +226,4 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 
 %files manual
 %defattr(644,root,root,755)
-%{_docdir}/%{name}-%{version}
+%{_docdir}/%{name}-manual-%{version}
