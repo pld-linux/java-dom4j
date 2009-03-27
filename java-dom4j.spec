@@ -3,18 +3,20 @@
 %bcond_with	bootstrap		# boostrap
 #
 #
+%define		srcname	dom4j
+#
 %include	/usr/lib/rpm/macros.java
 Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
-Name:		dom4j
+Name:		java-%{srcname}
 Version:	1.6.1
 Release:	0.1
 License:	BSD-style
 Group:		Applications/Text
-Source0:	http://dl.sourceforge.net/dom4j/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
 # Source0-md5:	1e7ef6d20939315714de4a8502f27b2d
-Source1:	%{name}-rundemo.sh
-Patch0:		%{name}-build_xml.patch
+Source1:	%{srcname}-rundemo.sh
+Patch0:		%{srcname}-build_xml.patch
 URL:		http://www.dom4j.org/
 %if %{with bootstrap}
 BuildRequires:	jaxen-bootstrap >= 0:1.1-1
@@ -68,47 +70,47 @@ XPath support.
 
 %description -l pl.UTF-8
 dom4j to szkielet XML z otwartymi źródłami dla Javy. Pozwala na
-odczyt, zapis, nawigację i modyfikowanie dokumentów XML. Integruje
-się z DOM i SAX, jest w sposób przezroczysty zintegrowany z pełną
-obsługą XPath.
+odczyt, zapis, nawigację i modyfikowanie dokumentów XML. Integruje się
+z DOM i SAX, jest w sposób przezroczysty zintegrowany z pełną obsługą
+XPath.
 
 %package demo
-Summary:	Samples for %{name}
-Summary(pl.UTF-8):	Przykłady do pakietu %{name}
+Summary:	Samples for %{srcname}
+Summary(pl.UTF-8):	Przykłady do pakietu %{srcname}
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
 
 %description demo
-Samples for %{name}.
+Samples for %{srcname}.
 
 %description demo -l pl.UTF-8
-Przykłady do pakietu %{name}.
+Przykłady do pakietu %{srcname}.
 
 %package manual
-Summary:	Manual for %{name}
-Summary(pl.UTF-8):	Podręcznik do pakietu %{name}
+Summary:	Manual for %{srcname}
+Summary(pl.UTF-8):	Podręcznik do pakietu %{srcname}
 Group:		Documentation
 Requires:	jpackage-utils
 
 %description manual
-Documentation for %{name}.
+Documentation for %{srcname}.
 
 %description manual -l pl.UTF-8
-Podręcznik do pakietu %{name}.
+Podręcznik do pakietu %{srcname}.
 
 %package javadoc
-Summary:	Javadoc for %{name}
-Summary(pl.UTF-8):	Dokumentacja Javadoc do pakietu %{name}
+Summary:	Javadoc for %{srcname}
+Summary(pl.UTF-8):	Dokumentacja Javadoc do pakietu %{srcname}
 Group:		Documentation
 
 %description javadoc
-Javadoc for %{name}.
+Javadoc for %{srcname}.
 
 %description javadoc -l pl.UTF-8
-Dokumentacja Javadoc do pakietu %{name}.
+Dokumentacja Javadoc do pakietu %{srcname}.
 
 %prep
-%setup -q
+%setup -q -n %{srcname}-%{version}
 # replace run.sh
 install %{SOURCE1} run.sh
 
@@ -183,47 +185,47 @@ rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -a build/%{name}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
-ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+cp -a build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
+ln -s %{srcname}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 
 # javadoc
-install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost
+install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost
 
 # manual
-install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-manual-%{version}
-cp -a docs/* $RPM_BUILD_ROOT%{_docdir}/%{name}-manual-%{version}
+install -d $RPM_BUILD_ROOT%{_docdir}/%{srcname}-manual-%{version}
+cp -a docs/* $RPM_BUILD_ROOT%{_docdir}/%{srcname}-manual-%{version}
 
 # demo
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
-cp -a xml $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/src
-cp -a src/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/src
-cp -a build/classes/org/dom4j/samples $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}/classes/org/dom4j
-install run.sh $RPM_BUILD_ROOT%{_datadir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/classes/org/dom4j
+cp -a xml $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}
+install -d $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/src
+cp -a src/samples $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/src
+cp -a build/classes/org/dom4j/samples $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/classes/org/dom4j
+install run.sh $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post javadoc
-ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
+ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
 
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.txt
-%{_javadir}/%{name}.jar
-%{_javadir}/%{name}-%{version}.jar
+%{_javadir}/%{srcname}.jar
+%{_javadir}/%{srcname}-%{version}.jar
 
 %files demo
 %defattr(644,root,root,755)
-%{_datadir}/%{name}-%{version}
+%{_datadir}/%{srcname}-%{version}
 
 %files javadoc
 %defattr(644,root,root,755)
-%{_javadocdir}/%{name}-%{version}
-%ghost %{_javadocdir}/%{name}
+%{_javadocdir}/%{srcname}-%{version}
+%ghost %{_javadocdir}/%{srcname}
 
 %files manual
 %defattr(644,root,root,755)
-%{_docdir}/%{name}-manual-%{version}
+%{_docdir}/%{srcname}-manual-%{version}
