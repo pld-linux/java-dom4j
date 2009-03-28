@@ -59,6 +59,8 @@ Requires:	jaxen-bootstrap >= 0:1.1-1
 %else
 Requires:	jaxen >= 0:1.1-1
 %endif
+Provides:	dom4j = %{version}
+Obsoletes:	dom4j
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -79,6 +81,8 @@ Summary:	Samples for %{srcname}
 Summary(pl.UTF-8):	Przykłady do pakietu %{srcname}
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
+Provides:	dom4j-demo
+Obsoletes:	dom4j-demo
 
 %description demo
 Samples for %{srcname}.
@@ -91,6 +95,8 @@ Summary:	Manual for %{srcname}
 Summary(pl.UTF-8):	Podręcznik do pakietu %{srcname}
 Group:		Documentation
 Requires:	jpackage-utils
+Provides:	dom4j-manual
+Obsoletes:	dom4j-manual
 
 %description manual
 Documentation for %{srcname}.
@@ -102,6 +108,8 @@ Podręcznik do pakietu %{srcname}.
 Summary:	Javadoc for %{srcname}
 Summary(pl.UTF-8):	Dokumentacja Javadoc do pakietu %{srcname}
 Group:		Documentation
+Provides:	dom4j-javadoc
+Obsoletes:	dom4j-javadoc
 
 %description javadoc
 Javadoc for %{srcname}.
