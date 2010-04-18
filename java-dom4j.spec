@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_with	bootstrap		# boostrap
 #
-#
 %define		srcname	dom4j
 #
 %include	/usr/lib/rpm/macros.java
@@ -13,7 +12,7 @@ Version:	1.6.1
 Release:	0.1
 License:	BSD-style
 Group:		Applications/Text
-Source0:	http://dl.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
 # Source0-md5:	1e7ef6d20939315714de4a8502f27b2d
 Source1:	%{srcname}-rundemo.sh
 Patch0:		%{srcname}-build_xml.patch
@@ -27,6 +26,9 @@ BuildRequires:	ant >= 0:1.6
 #BuildRequires:	bea-stax
 #BuildRequires:	bea-stax-api
 #BuildRequires:	isorelax
+BuildRequires:	java-xalan
+BuildRequires:	java-xerces
+BuildRequires:	java-xml-commons-apis
 BuildRequires:	jdk < 1.6
 BuildRequires:	jpackage-utils >= 0:1.6
 BuildRequires:	jtidy
@@ -37,21 +39,18 @@ BuildRequires:	junit
 #BuildRequires:	relaxngDatatype
 BuildRequires:	rpmbuild(macros) >= 1.300
 #BuildRequires:	ws-jaxme
-BuildRequires:	xalan-j
-BuildRequires:	xerces-j
-BuildRequires:	xml-commons-apis
 #BuildRequires:	xpp2
 #BuildRequires:	xpp3
 Requires:	bea-stax
 Requires:	bea-stax-api
 Requires:	isorelax
+Requires:	java-xalan
+Requires:	java-xerces
+Requires:	java-xml-commons-apis
 Requires:	msv-msv
 Requires:	msv-xsdlib
 Requires:	relaxngDatatype
 Requires:	ws-jaxme
-Requires:	xalan-j
-Requires:	xerces-j
-Requires:	xml-commons-apis
 Requires:	xpp2
 Requires:	xpp3
 %if %{with bootstrap}
