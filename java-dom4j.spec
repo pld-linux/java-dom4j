@@ -1,16 +1,18 @@
 # TODO:
 # - build from source. See SOURCE branch for unfinished work.
-%define		srcname	dom4j
+ 
 %include	/usr/lib/rpm/macros.java
+%define		srcname	dom4j
+ 
 Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
-Name:		java-%{srcname}
+Name:		java-dom4j
 Version:	1.6.1
 Release:	0.1
 License:	BSD-style
 Group:		Applications/Text
-Source0:	http://sourceforge.net/projects/dom4j/files/dom4j/1.6.1/dom4j-1.6.1.jar
-# Source0-md5:	1e7ef6d20939315714de4a8502f27b2d
+Source0:	http://downloads.sourceforge.net/project/dom4j/dom4j/1.6.1/dom4j-%{version}.jar
+# Source0-md5:	4d8f51d3fe3900efc6e395be48030d6d
 Source1:	%{srcname}-rundemo.sh
 URL:		http://www.dom4j.org/
 BuildArch:	noarch
@@ -36,17 +38,13 @@ rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -a %{SOURCE0}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
+cp -a %{SOURCE0} $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 ln -s %{srcname}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post javadoc
-ln -nfs %{srcname}-%{version} %{_javadocdir}/%{srcname}
-
 %files
 %defattr(644,root,root,755)
-%doc LICENSE.txt
 %{_javadir}/%{srcname}.jar
 %{_javadir}/%{srcname}-%{version}.jar
