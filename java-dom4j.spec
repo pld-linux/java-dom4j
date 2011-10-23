@@ -1,6 +1,10 @@
+# TODO
+# - tests: org.dom4j.io.StaxTest failed
 #
 # Conditional build:
-%bcond_with	bootstrap		# boostrap
+%bcond_with		bootstrap	# boostrap
+%bcond_without	javadoc		# don't build javadoc
+%bcond_with		tests		# don't build and run tests
 
 %define		srcname	dom4j
 %include	/usr/lib/rpm/macros.java
@@ -8,13 +12,14 @@ Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
 Name:		java-%{srcname}
 Version:	1.6.1
-Release:	0.2
+Release:	1
 License:	BSD-style
 Group:		Applications/Text
 Source0:	http://downloads.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
 # Source0-md5:	1e7ef6d20939315714de4a8502f27b2d
 Source1:	%{srcname}-rundemo.sh
 Patch0:		%{srcname}-build_xml.patch
+Patch1:		dom4j-java5.patch
 URL:		http://www.dom4j.org/
 %if %{with bootstrap}
 BuildRequires:	jaxen-bootstrap >= 1.1-1
@@ -26,6 +31,7 @@ BuildRequires:	ant >= 1.6
 #BuildRequires:	bea-stax-api
 #BuildRequires:	isorelax
 BuildRequires:	java(jaxp_parser_impl)
+BuildRequires:	java-jaxme
 BuildRequires:	java-junit
 BuildRequires:	java-xalan
 BuildRequires:	java-xml-commons
@@ -36,27 +42,25 @@ BuildRequires:	jtidy
 #BuildRequires:	msv-xsdlib
 #BuildRequires:	relaxngDatatype
 BuildRequires:	rpmbuild(macros) >= 1.300
-#BuildRequires:	ws-jaxme
 #BuildRequires:	xpp2
 #BuildRequires:	xpp3
 #Requires:	bea-stax
 #Requires:	bea-stax-api
 #Requires:	isorelax
 Requires:	java(jaxp_parser_impl)
+Requires:	java-jaxme
 Requires:	java-xalan
 Requires:	java-xml-commons-apis
 Requires:	msv-msv
 Requires:	msv-xsdlib
 Requires:	relaxngDatatype
-#Requires:	ws-jaxme
 Requires:	xpp2
 Requires:	xpp3
 %if %{with bootstrap}
 Requires:	jaxen-bootstrap >= 0:1.1-1
 %else
-Requires:	jaxen >= 0:1.1-1
+#Requires:	jaxen >= 0:1.1-1
 %endif
-Provides:	dom4j = %{version}
 Obsoletes:	dom4j
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -78,7 +82,6 @@ Summary:	Samples for %{srcname}
 Summary(pl.UTF-8):	Przykłady do pakietu %{srcname}
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
-Provides:	dom4j-demo
 Obsoletes:	dom4j-demo
 
 %description demo
@@ -92,7 +95,6 @@ Summary:	Manual for %{srcname}
 Summary(pl.UTF-8):	Podręcznik do pakietu %{srcname}
 Group:		Documentation
 Requires:	jpackage-utils
-Provides:	dom4j-manual
 Obsoletes:	dom4j-manual
 
 %description manual
@@ -105,7 +107,6 @@ Podręcznik do pakietu %{srcname}.
 Summary:	Javadoc for %{srcname}
 Summary(pl.UTF-8):	Dokumentacja Javadoc do pakietu %{srcname}
 Group:		Documentation
-Provides:	dom4j-javadoc
 Obsoletes:	dom4j-javadoc
 
 %description javadoc
@@ -125,14 +126,14 @@ rm -f lib/endorsed/xml-apis-2.0.2.jar
 rm -f lib/test/junit-3.8.1.jar
 #rm -f lib/test/junitperf-1.8.jar
 #rm -f lib/tools/isorelax-20030108.jar
-#rm -f lib/tools/jaxme-0.3.jar
-#rm -f lib/tools/jaxme-js-0.3.jar
-#rm -f lib/tools/jaxme-xs-0.3.jar
+rm -f lib/tools/jaxme-0.3.jar
+rm -f lib/tools/jaxme-js-0.3.jar
+rm -f lib/tools/jaxme-xs-0.3.jar
 rm -f lib/tools/jtidy-4aug2000r7-dev.jar
 rm -f lib/tools/xalan-2.5.1.jar
 rm -f lib/tools/xercesImpl-2.6.2.jar
 #rm -f lib/jaxen-1.1-beta-6.jar
-#rm -f lib/jaxme-api-0.3.jar
+rm -f lib/jaxme-api-0.3.jar
 #rm -f lib/jsr173_1.0_api.jar
 #rm -f lib/msv-20030807.jar
 #rm -f lib/pull-parser-2.1.10.jar
@@ -150,7 +151,10 @@ rm -f src/test/org/dom4j/xpath/MatrixConcatTest.java
 rm src/test/org/dom4j/bean/BeansTest.java
 # fix for deleted jars
 sed -i -e '/unjar/d' -e 's|,cookbook/\*\*,|,|' build.xml
-%patch0
+%undos build.xml
+%patch0 -p0
+%undos -f java
+%patch1 -p1
 
 rm -rf docs/apidocs
 
@@ -161,7 +165,7 @@ cd lib
 	cd endorsed
 		ln -sf $(find-jar xml-commons-apis)
 	cd ..
-#	ln -sf $(find-jar jaxme/jaxmeapi)
+	ln -sf $(find-jar jaxme/jaxmeapi)
 #	ln -sf $(find-jar msv-xsdlib)
 #	ln -sf $(find-jar msv-msv)
 #	ln -sf $(find-jar jaxen)
@@ -173,17 +177,17 @@ cd lib
 	cd ..
 #	ln -sf $(find-jar xpp3)
 	cd tools
-#		ln -sf $(find-jar jaxme/jaxmexs)
+		ln -sf $(find-jar jaxme/jaxmexs)
 		ln -sf $(find-jar xalan)
-#		ln -sf $(find-jar jaxme/jaxmejs)
+		ln -sf $(find-jar jaxme/jaxmejs)
 		ln -sf $(find-jar jtidy)
 #		ln -sf $(find-jar isorelax)
-#		ln -sf $(find-jar jaxme/jaxme2)
+		ln -sf $(find-jar jaxme/jaxme2)
 		ln -sf $(find-jar xercesImpl)
 	cd ..
 cd ..
 
-%ant package samples test
+%ant package samples %{?with_javadoc:javadoc} %{?with_tests:test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -194,9 +198,11 @@ cp -p build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 ln -s %{srcname}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 
 # javadoc
+%if %{with javadoc}
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
-cp -p build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
 ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost
+%endif
 
 # manual
 install -d $RPM_BUILD_ROOT%{_docdir}/%{srcname}-manual-%{version}
