@@ -1,0 +1,63 @@
+--- build.xml.sav	2007-02-16 01:51:43.000000000 -0500
++++ build.xml	2007-02-16 02:07:51.000000000 -0500
+@@ -9,6 +9,11 @@
+         </fileset>
+     </path>
+ 
++    <path id="boot.compile.classpath">
++       <pathelement location="/usr/share/java/jaxp12.jar"/>
++       <pathelement location="/usr/lib/jvm/java/jre/lib/rt.jar"/>
++    </path>
++
+     <path id="endorsed.classpath">
+         <fileset dir="./lib/endorsed">
+             <include name="*.jar" />
+@@ -145,7 +150,8 @@
+            target="1.3"
+            source="1.3"
+            deprecation="${deprecation}"
+-           classpathref="compile.classpath">
++           classpathref="compile.classpath"
++           bootclasspathref="boot.compile.classpath">
+     </javac>
+   </target>
+ 
+@@ -191,6 +197,7 @@
+     <javadoc packagenames="${packages}"
+              sourcepath="${build.src}"
+              destdir="${build.javadocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -210,6 +217,7 @@
+     <javadoc packagenames="${packages}"
+              sourcepath="${build.src}"
+              destdir="${build.javadocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -227,6 +235,7 @@
+     <javadoc packagenames="${api.packages}"
+              sourcepath="${build.src}"
+              destdir="${build.apidocs}"
++             classpathref="compile.classpath"
+              author="true"
+              version="true"
+              use="true"
+@@ -335,10 +344,10 @@
+ 	
+   <target name="prepare-jaxb" depends="prepare-samples">
+     <path id="classpath.jaxb">
+-      <pathelement location="./lib/tools/jaxme-0.3.jar"/>
+-      <pathelement location="./lib/tools/jaxme-js-0.3.jar"/>
+-      <pathelement location="./lib/tools/jaxme-xs-0.3.jar"/>
+-      <pathelement location="./lib/jaxme-api-0.3.jar"/>
++      <pathelement location="./lib/tools/jaxme2.jar"/>
++      <pathelement location="./lib/tools/jaxmejs.jar"/>
++      <pathelement location="./lib/tools/jaxmexs.jar"/>
++      <pathelement location="./lib/jaxmeapi.jar"/>
+     </path>
+ 
+     <taskdef name="xjc" classname="org.apache.ws.jaxme.generator.XJCTask">
