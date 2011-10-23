@@ -408,25 +408,20 @@
 +}
 --- dom4j-1.6.1.orig/src/java/org/dom4j/dom/DOMDocumentFactory.java	2006-06-25 21:44:17.911118787 +0200
 +++ dom4j-1.6.1.orig/src/java/org/dom4j/dom/DOMDocumentFactory.java	2006-06-25 21:34:34.105598253 +0200
-@@ -174,7 +174,7 @@ 
+@@ -174,9 +174,11 @@
                      docType.getPublicId(), docType.getSystemId());
          }
      }
 -}
-+
+-
  
- 
- 
-@@ -213,4 +213,8 @@ 
-  * POSSIBILITY OF SUCH DAMAGE.
-  * 
-  * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
-- */
-+ */
 +	public java.lang.Object getFeature(java.lang.String feature,java.lang.String version) {
 +	  return null;
 +	}
 +}
+ 
+ /*
+  * Redistribution and use of this software and associated documentation
 --- dom4j-1.6.1.orig/src/java/org/dom4j/dom/DOMDocument.java	2006-06-25 21:44:17.911118787 +0200
 +++ dom4j-1.6.1.orig/src/java/org/dom4j/dom/DOMDocument.java	2006-06-25 21:34:34.110597221 +0200
 @@ -301,7 +301,7 @@ 
