@@ -1,15 +1,14 @@
 #
 # Conditional build:
 %bcond_with	bootstrap		# boostrap
-#
+
 %define		srcname	dom4j
-#
 %include	/usr/lib/rpm/macros.java
 Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
 Name:		java-%{srcname}
 Version:	1.6.1
-Release:	0.1
+Release:	0.2
 License:	BSD-style
 Group:		Applications/Text
 Source0:	http://downloads.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
@@ -18,21 +17,20 @@ Source1:	%{srcname}-rundemo.sh
 Patch0:		%{srcname}-build_xml.patch
 URL:		http://www.dom4j.org/
 %if %{with bootstrap}
-BuildRequires:	jaxen-bootstrap >= 0:1.1-1
+BuildRequires:	jaxen-bootstrap >= 1.1-1
 %else
-#BuildRequires:	jaxen >= 0:1.1-2
+#BuildRequires:	jaxen >= 1.1-2
 %endif
-BuildRequires:	ant >= 0:1.6
+BuildRequires:	ant >= 1.6
 #BuildRequires:	bea-stax
 #BuildRequires:	bea-stax-api
 #BuildRequires:	isorelax
+BuildRequires:	java(jaxp_parser_impl)
+BuildRequires:	java-junit
 BuildRequires:	java-xalan
-BuildRequires:	java-xerces
-BuildRequires:	java-xml-commons-apis
-BuildRequires:	jdk < 1.6
-BuildRequires:	jpackage-utils >= 0:1.6
+BuildRequires:	java-xml-commons
+BuildRequires:	jpackage-utils >= 1.6
 BuildRequires:	jtidy
-BuildRequires:	junit
 #BuildRequires:	junitperf
 #BuildRequires:	msv-msv
 #BuildRequires:	msv-xsdlib
@@ -41,16 +39,16 @@ BuildRequires:	rpmbuild(macros) >= 1.300
 #BuildRequires:	ws-jaxme
 #BuildRequires:	xpp2
 #BuildRequires:	xpp3
-Requires:	bea-stax
-Requires:	bea-stax-api
-Requires:	isorelax
+#Requires:	bea-stax
+#Requires:	bea-stax-api
+#Requires:	isorelax
+Requires:	java(jaxp_parser_impl)
 Requires:	java-xalan
-Requires:	java-xerces
 Requires:	java-xml-commons-apis
 Requires:	msv-msv
 Requires:	msv-xsdlib
 Requires:	relaxngDatatype
-Requires:	ws-jaxme
+#Requires:	ws-jaxme
 Requires:	xpp2
 Requires:	xpp3
 %if %{with bootstrap}
@@ -192,12 +190,12 @@ rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -a build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
+cp -p build/%{srcname}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}-%{version}.jar
 ln -s %{srcname}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{srcname}.jar
 
 # javadoc
 install -d $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
-cp -a build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
+cp -p build/doc/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{srcname}-%{version}
 ln -s %{srcname}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{srcname} # ghost
 
 # manual
@@ -210,7 +208,7 @@ cp -a xml $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}
 install -d $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/src
 cp -a src/samples $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/src
 cp -a build/classes/org/dom4j/samples $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}/classes/org/dom4j
-install run.sh $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}
+install -p run.sh $RPM_BUILD_ROOT%{_datadir}/%{srcname}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
