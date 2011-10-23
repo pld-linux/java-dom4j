@@ -12,7 +12,7 @@ Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
 Name:		java-dom4j
 Version:	1.6.1
-Release:	1
+Release:	2
 License:	BSD-style
 Group:		Applications/Text
 Source0:	http://downloads.sourceforge.net/dom4j/%{srcname}-%{version}.tar.gz
@@ -50,12 +50,12 @@ BuildRequires:	rpmbuild(macros) >= 1.300
 Requires:	java(jaxp_parser_impl)
 Requires:	java-jaxme
 Requires:	java-xalan
-Requires:	java-xml-commons-apis
-Requires:	msv-msv
-Requires:	msv-xsdlib
-Requires:	relaxngDatatype
-Requires:	xpp2
-Requires:	xpp3
+Requires:	java-xml-commons
+#Requires:	msv-msv
+#Requires:	msv-xsdlib
+#Requires:	relaxngDatatype
+#Requires:	xpp2
+#Requires:	xpp3
 %if %{with bootstrap}
 Requires:	jaxen-bootstrap >= 0:1.1-1
 %else
