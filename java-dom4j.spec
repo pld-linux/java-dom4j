@@ -7,7 +7,6 @@
 %bcond_with		tests		# don't build and run tests
 
 %define		srcname	dom4j
-%include	/usr/lib/rpm/macros.java
 Summary:	DOM4J - Open Source XML framework for Java
 Summary(pl.UTF-8):	Szkielet XML z otwartymi źródłami dla Javy
 Name:		java-dom4j
